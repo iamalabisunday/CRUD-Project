@@ -35,14 +35,16 @@ function handleFormData(e) {
   const itemName = nameofItem.value.trim();
   const itemLink = linkToItem.value.trim();
   const itemDescription = descriptionOfItem.value.trim();
-
+  // Create research item object
   const researchItem = {
     name: itemName,
     link: itemLink,
     description: itemDescription,
   };
-
+  // Add research item to array
   researchItems.push(researchItem);
+  // Store data in local storage
   localStorage.setItem("itemsOfResearch", JSON.stringify(researchItems));
+  // Clear form fields
   form.reset();
 }
