@@ -58,8 +58,10 @@ function fetchDataFromLocalStorage() {
   // if Data exists
   if (storedItems) {
     // convert back to array of object
-    const parsedItems = JSON.parse(storedItems);
+    researchItems = JSON.parse(storedItems);
   }
+  // Print items on UI on page load
+  printItemsOnUI();
 }
 
 // Call fetch function on page load
@@ -69,8 +71,70 @@ fetchDataFromLocalStorage(); // Immediately after script loads
 
 // Print Data From Local Storageon the UI
 function printItemsOnUI() {
-  const researchList = document.getElementById("research-list");
-  const storedItems = localStorage.getItem("itemsOfResearch");
+  researchItems.forEach(function (item) {
+    const printItemName = item.name;
+    const printItemLink = item.link;
+    const printItemDescription = item.description;
+
+    const itemsSection = document.getElementById("items-section");
+
+    // Create research item div
+    const researchItemDiv = document.createElement("div");
+    researchItemDiv.classList.add("research-item");
+
+    const titleAndDeleteContainer = document.createElement("div");
+    titleAndDeleteContainer.classList.add("title-and-delete-container");
+
+    // Create item link
+    const itemLinkElement = document.createElement("a");
+    itemLinkElement.setAttribute("href", `${printItemLink}`);
+    itemLinkElement.setAttribute("target", "_blank");
+    itemLinkElement.textContent = printItemName;
+
+    // Create delete icon
+    const deleteIcon = document.createElement("i");
+    deleteIcon.classList.add("fa-solid", "fa-trash");
+
+    // Append link and delete icon to title container
+    titleAndDeleteContainer.appendChild(itemLinkElement);
+    titleAndDeleteContainer.appendChild(deleteIcon);
+
+    // create description div
+    const descriptionOfItemDiv = document.createElement("div");
+    descriptionOfItemDiv.classList.add("description-of-item");
+
+    // create description paragraph
+    const descriptionParagraph = document.createElement("p");
+    descriptionParagraph.textContent = printItemDescription;
+
+    // Append paragraph to description div
+    descriptionOfItemDiv.appendChild(descriptionParagraph);
+
+    researchItemDiv.appendChild(titleAndDeleteContainer);
+    researchItemDiv.appendChild(descriptionOfItemDiv);
+
+    itemsSection.appendChild(researchItemDiv);
+  });
 }
-// Print items on UI on page load
-printItemsOnUI();
+
+// Delete item functionality
+const itemsSection = document.getElementById("items-section");
+
+itemsSection.addEventListener("click", deleteItem);
+
+function deleteItem(e) {
+  if (e.target.classList.contains("fa-trash")) {
+    const itemToDelete = e.target.parentElement.querySelector("a").textContent;
+
+    // Remove from DOM
+    e.target.parentElement.parentElement.remove();
+
+    // Remove from researchItems array
+    researchItems = researchItems.filter(function (item) {
+      return item.name !== itemToDelete;
+    });
+
+    // Update local storage
+    localStorage.setItem("itemsOfResearch", JSON.stringify(researchItems));
+  }
+}
