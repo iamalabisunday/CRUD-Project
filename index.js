@@ -2,7 +2,7 @@ const additemButton = document.getElementById("add-button");
 const modalOverlay = document.getElementById("modal-overlay");
 const nameofItem = document.getElementById("name-of-item");
 const closeIcon = document.getElementById("close-icon");
-const form = document.getElementById("item-form");
+const form = document.getElementById("form");
 const linkToItem = document.getElementById("link-to-item");
 const descriptionOfItem = document.getElementById("description-of-item");
 
@@ -24,4 +24,25 @@ function hideModalOverlay() {
   }
 }
 
-// collet and handle the form data
+// Collect and handle form data
+let researchItems = [];
+
+form.addEventListener("submit", handleFormData);
+
+function handleFormData(e) {
+  e.preventDefault();
+  // Input Data collection
+  const itemName = nameofItem.value.trim();
+  const itemLink = linkToItem.value.trim();
+  const itemDescription = descriptionOfItem.value.trim();
+
+  const researchItem = {
+    name: itemName,
+    link: itemLink,
+    description: itemDescription,
+  };
+
+  researchItems.push(researchItem);
+  localStorage.setItem("itemsOfResearch", JSON.stringify(researchItems));
+  form.reset();
+}
