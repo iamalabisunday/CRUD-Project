@@ -7,17 +7,17 @@ const linkToItem = document.getElementById("link-to-item");
 const descriptionOfItem = document.getElementById("description-of-item");
 
 // Reveal and hide modal overlay
-additemButton.addEventListener("click", revealModalOverlay);
+additemButton.addEventListener("click", openModalOverlay);
 
-function revealModalOverlay() {
+function openModalOverlay() {
   modalOverlay.classList.remove("modal-overlay");
   modalOverlay.classList.add("modal-overlay-visible");
   nameofItem.focus();
 }
 
-closeIcon.addEventListener("click", hideModalOverlay);
+closeIcon.addEventListener("click", closeModalOverlay);
 
-function hideModalOverlay() {
+function closeModalOverlay() {
   if (modalOverlay.classList.contains("modal-overlay-visible")) {
     modalOverlay.classList.add("modal-overlay");
     modalOverlay.classList.remove("modal-overlay-visible");
@@ -47,4 +47,30 @@ function handleFormData(e) {
   localStorage.setItem("itemsOfResearch", JSON.stringify(researchItems));
   // Clear form fields
   form.reset();
+  closeModalOverlay();
+  fetchDataFromLocalStorage();
 }
+
+// fetch data from local storage on page load
+function fetchDataFromLocalStorage() {
+  // get data from local storage
+  const storedItems = localStorage.getItem("itemsOfResearch");
+  // if Data exists
+  if (storedItems) {
+    // convert back to array of object
+    const parsedItems = JSON.parse(storedItems);
+  }
+}
+
+// Call fetch function on page load
+fetchDataFromLocalStorage(); // Immediately after script loads
+
+// window.addEventListener("load", fetchDataFromLocalStorage); // After page loads
+
+// Print Data From Local Storageon the UI
+function printItemsOnUI() {
+  const researchList = document.getElementById("research-list");
+  const storedItems = localStorage.getItem("itemsOfResearch");
+}
+// Print items on UI on page load
+printItemsOnUI();
